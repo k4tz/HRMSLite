@@ -6,9 +6,9 @@ Fullstack application: **React (TypeScript)** frontend with **Vite** and **React
 
 ```
 HRMSLite/
-??? frontend/          # React + Vite + TypeScript + React Router
-??? backend/           # FastAPI + SQLAlchemy + MySQL
-??? README.md
+ frontend/          # React + Vite + TypeScript + React Router
+ backend/           # FastAPI + SQLAlchemy + MySQL
+ README.md
 ```
 
 ## Prerequisites
