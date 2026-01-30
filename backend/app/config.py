@@ -22,13 +22,17 @@ class Settings(BaseSettings):
     mysql_user: str = "root"
     mysql_password: str = ""
     mysql_database: str = "hrmslite"
+    mysql_url: str = Field(alias="MYSQL_URL")
 
     @property
     def database_url(self) -> str:
-        return (
-            f"mysql+pymysql://{self.mysql_user}:{self.mysql_password}"
-            f"@{self.mysql_host}:{self.mysql_port}/{self.mysql_database}"
-        )
+        if self.mysql_url:
+            return self.mysql_url
+        else:
+            return (
+                f"mysql+pymysql://{self.mysql_user}:{self.mysql_password}"
+                f"@{self.mysql_host}:{self.mysql_port}/{self.mysql_database}"
+            )
 
 
 settings = Settings()
