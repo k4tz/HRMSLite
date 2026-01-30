@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from pydantic import Field
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     port: int = 8000
 
     # MySQL
-    mysql_host: str = "localhost"
+    mysql_host: str = Field(alias="MYSQLHOST")
     mysql_port: int = 3306
     mysql_user: str = "root"
     mysql_password: str = ""
@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     def database_url(self) -> str:
         return (
             f"mysql+pymysql://{self.mysql_user}:{self.mysql_password}"
-            f"@{self.MYSQLHOST}:{self.mysql_port}/{self.mysql_database}"
+            f"@{self.mysql_host}:{self.mysql_port}/{self.mysql_database}"
         )
 
 
