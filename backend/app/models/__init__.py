@@ -1,5 +1,5 @@
 from app.database import Base
+from app.models.employee import Employee
+from app.models.attendance import Attendance, AttendanceStatus
 
-# Import models here when you create them, e.g.:
-# from app.models.user import User  # noqa: F401
-__all__ = ["Base"]
+__all__ = ["Base", "Employee", "Attendance", "AttendanceStatus"]

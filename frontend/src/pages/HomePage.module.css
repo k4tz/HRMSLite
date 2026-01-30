@@ -1,0 +1,19 @@
+.intro {
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.links {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--color-text-secondary);
+}
+
+.links li {
+  margin-bottom: 0.5rem;
+}
+
+.links a {
+  font-weight: 500;
+}

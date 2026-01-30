@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import health, api
+from app.models import Employee, Attendance  # noqa: F401 - register models for create_all
+from app.routers import health, api, employees, attendance
 
 
 @asynccontextmanager
@@ -31,8 +32,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(health.router, prefix="/api", tags=["health"])
-app.include_router(api.router, prefix="/api", tags=["api"])
+app.include_router(health.router, prefix="/api")
+app.include_router(api.router, prefix="/api")
+app.include_router(employees.router, prefix="/api")
+app.include_router(attendance.router, prefix="/api")
 
 
 @app.get("/")

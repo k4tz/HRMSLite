@@ -1,15 +1,34 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useLocation } from 'react-router-dom'
+import styles from './Layout.module.css'
+
+const navItems = [
+  { to: '/', label: 'Home' },
+  { to: '/employees', label: 'Employees' },
+  { to: '/employees/add', label: 'Add Employee' },
+  { to: '/attendance', label: 'Attendance' },
+]
 
 export function Layout() {
+  const location = useLocation()
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ padding: '1rem 2rem', borderBottom: '1px solid #333' }}>
-        <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-          <Link to="/">HRMS Lite</Link>
-          <Link to="/">Home</Link>
+    <div className={styles.root}>
+      <header className={styles.header}>
+        <Link to="/" className={styles.brand}>
+          HRMS Lite
+        </Link>
+        <nav className={styles.nav}>
+          {navItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={location.pathname === item.to ? styles.navActive : styles.navLink}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
       </header>
-      <main style={{ flex: 1, padding: '2rem' }}>
+      <main className={styles.main}>
         <Outlet />
       </main>
     </div>
