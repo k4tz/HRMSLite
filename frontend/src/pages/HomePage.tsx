@@ -3,25 +3,29 @@ import { PageSection } from '../components/PageSection'
 import { Card } from '../components/Card'
 import styles from './HomePage.module.css'
 
+const linkCards = [
+  { to: '/dashboard', title: 'Dashboard', description: 'Summary, counts, and present days per employee' },
+  { to: '/employees', title: 'Employees', description: 'View and manage employee records' },
+  { to: '/employees/add', title: 'Add Employee', description: 'Add a new employee' },
+  { to: '/attendance', title: 'Attendance', description: 'Mark and view daily attendance' },
+]
+
 export function HomePage() {
   return (
     <PageSection title="Welcome to HRMS Lite">
-      <Card>
-        <p className={styles.intro}>
-          Manage employee records and track daily attendance from a single place.
-        </p>
-        <ul className={styles.links}>
-          <li>
-            <Link to="/employees">View employees</Link>
-          </li>
-          <li>
-            <Link to="/employees/add">Add a new employee</Link>
-          </li>
-          <li>
-            <Link to="/attendance">Mark & view attendance</Link>
-          </li>
-        </ul>
-      </Card>
+      <p className={styles.intro}>
+        Manage employee records and track daily attendance from a single place.
+      </p>
+      <div className={styles.cardGrid}>
+        {linkCards.map((item) => (
+          <Link key={item.to} to={item.to} className={styles.cardLink}>
+            <Card className={styles.linkCard}>
+              <h3 className={styles.cardTitle}>{item.title}</h3>
+              <p className={styles.cardDescription}>{item.description}</p>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </PageSection>
   )
 }

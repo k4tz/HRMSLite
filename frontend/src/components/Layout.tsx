@@ -3,6 +3,7 @@ import styles from './Layout.module.css'
 
 const navItems = [
   { to: '/', label: 'Home' },
+  { to: '/dashboard', label: 'Dashboard' },
   { to: '/employees', label: 'Employees' },
   { to: '/employees/add', label: 'Add Employee' },
   { to: '/attendance', label: 'Attendance' },

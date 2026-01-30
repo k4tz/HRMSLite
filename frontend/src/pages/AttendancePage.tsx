@@ -30,6 +30,8 @@ export function AttendancePage() {
   const [employees, setEmployees] = useState<Employee[]>([])
   const [attendance, setAttendance] = useState<Attendance[]>([])
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number | ''>('')
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
   const [loadingEmployees, setLoadingEmployees] = useState(true)
   const [loadingAttendance, setLoadingAttendance] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +57,11 @@ export function AttendancePage() {
     setLoadingAttendance(true)
     setError(null)
     try {
-      const data = await fetchAttendance(employeeId)
+      const data = await fetchAttendance({
+        employee_id: employeeId,
+        date_from: dateFrom || undefined,
+        date_to: dateTo || undefined,
+      })
       setAttendance(data)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load attendance')
@@ -74,7 +80,7 @@ export function AttendancePage() {
     } else {
       loadAttendance(Number(selectedEmployeeId))
     }
-  }, [selectedEmployeeId])
+  }, [selectedEmployeeId, dateFrom, dateTo])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -96,7 +102,7 @@ export function AttendancePage() {
       })
       setForm((f) => ({ ...f, date: '' }))
       if (selectedEmployeeId === '' || selectedEmployeeId === form.employee_id) {
-        loadAttendance(selectedEmployeeId === '' ? undefined : form.employee_id)
+        loadAttendance(selectedEmployeeId === '' ? undefined : Number(selectedEmployeeId))
       }
     } catch (e) {
       setFormError(e instanceof Error ? e.message : 'Failed to mark attendance')
@@ -131,7 +137,7 @@ export function AttendancePage() {
             <h2 style={{ margin: '0 0 1rem 0', fontSize: '1.125rem', fontWeight: 600 }}>Mark attendance</h2>
             <form onSubmit={handleSubmit}>
               {formError && <ErrorMessage message={formError} />}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
                 <div style={{ minWidth: 200 }}>
                   <Select
                     label="Employee"
@@ -158,21 +164,43 @@ export function AttendancePage() {
                     onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as 'present' | 'absent' }))}
                   />
                 </div>
-                <Button type="submit" variant="primary" disabled={submitting}>
-                  {submitting ? 'Saving…' : 'Mark'}
-                </Button>
+                <div style={{ marginTop: 10 }}>
+                  <Button type="submit" variant="primary" disabled={submitting}>
+                    {submitting ? 'Saving…' : 'Mark'}
+                  </Button>
+                </div>
               </div>
             </form>
           </Card>
 
           <Card>
             <h2 style={{ margin: '0 0 1rem 0', fontSize: '1.125rem', fontWeight: 600 }}>Attendance records</h2>
-            <Select
-              label="Filter by employee"
-              options={[{ value: '', label: 'All employees' }, ...employeeOptions]}
-              value={selectedEmployeeId === '' ? '' : String(selectedEmployeeId)}
-              onChange={(e) => setSelectedEmployeeId(e.target.value === '' ? '' : Number(e.target.value))}
-            />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end', marginBottom: '1rem' }}>
+              <div style={{ minWidth: 140 }}>
+                <Select
+                  label="Filter by employee"
+                  options={[{ value: '', label: 'All employees' }, ...employeeOptions]}
+                  value={selectedEmployeeId === '' ? '' : String(selectedEmployeeId)}
+                  onChange={(e) => setSelectedEmployeeId(e.target.value === '' ? '' : Number(e.target.value))}
+                />
+              </div>
+              <div style={{ minWidth: 140 }}>
+                <Input
+                  label="From date"
+                  type="date"
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
+                />
+              </div>
+              <div style={{ minWidth: 140 }}>
+                <Input
+                  label="To date"
+                  type="date"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
+                />
+              </div>
+            </div>
             {loadingAttendance ? (
               <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
                 <Spinner />
