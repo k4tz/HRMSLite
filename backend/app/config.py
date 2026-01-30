@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"
     port: int = 8000
 
+    # CORS (comma-separated list of allowed origins)
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+
     # MySQL
     mysql_host: str = Field(alias="MYSQLHOST")
     mysql_port: int = 3306
